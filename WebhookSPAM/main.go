@@ -20,7 +20,7 @@ type FormData struct {
 var (
 	stopChan   chan bool
 	mu         sync.Mutex
-	isSpamming bool // Indicateur pour vérifier si le spam est actif
+	isSpamming bool
 )
 
 func main() {
@@ -28,7 +28,7 @@ func main() {
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		tmpl := template.Must(template.ParseFiles("form.html"))
-		// Passer une variable pour savoir si le spam est actif
+		
 		tmpl.Execute(w, map[string]bool{"isSpamming": isSpamming})
 	})
 
@@ -50,11 +50,11 @@ func main() {
 		if isSpamming {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			mu.Unlock()
-			return // Si déjà en train de spammer, rediriger sans démarrer un autre
+			return 
 		}
 
-		stopChan = make(chan bool) // Réinitialiser le canal pour chaque envoi
-		isSpamming = true          // Marquer comme spam actif
+		stopChan = make(chan bool) 
+		isSpamming = true         
 		mu.Unlock()
 
 		go func(data FormData) {
@@ -63,7 +63,7 @@ func main() {
 					{
 						"title":       "Nouveau Message",
 						"description": data.Message,
-						"color":       3447003, // Bleu
+						"color":       3447003, 
 						"timestamp":   time.Now().Format(time.RFC3339),
 						"footer": map[string]interface{}{
 							"text": "Envoyé via Go",
@@ -89,7 +89,7 @@ func main() {
 				case <-stopChan:
 					fmt.Println("Envoi arrêté.")
 					mu.Lock()
-					isSpamming = false // Marquer comme spam arrêté
+					isSpamming = false 
 					mu.Unlock()
 					return
 				default:
@@ -111,8 +111,8 @@ func main() {
 	http.HandleFunc("/stop", func(w http.ResponseWriter, r *http.Request) {
 		mu.Lock()
 		if isSpamming {
-			close(stopChan)    // Signaler l'arrêt de la boucle
-			isSpamming = false // Mettre à jour l'état
+			close(stopChan)  
+			isSpamming = false
 		}
 		mu.Unlock()
 
