@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envoi de Webhook</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            background-color: #000; /* Fond noir */
+            margin: 0;
+        }
+        .container {
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.9); /* Fond blanc légèrement transparent */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .container:hover {
+            transform: translateY(-5px);
+        }
+        input {
+            width: 93%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+        }
+        input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .send {
+            background-color: #3498db;
+            color: #fff;
+        }
+        .send:hover {
+            background-color: #2980b9;
+        }
+        .stop {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+        .stop:hover {
+            background-color: #c0392b;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Envoi de Webhook</h2>
+        <form action="/send" method="post">
+            <input type="text" name="webhook" placeholder="URL du Webhook" required>
+            <input type="text" name="message" placeholder="Message" required>
+            <input type="number" name="interval" placeholder="Intervalle (en ms)" min="1" required>
+            <input type="url" name="imageURL" placeholder="URL de l'image (facultatif)">
+            <div class="button-group">
+                <button type="submit" class="send"><i class="fas fa-paper-plane"></i> Envoyer</button>
+                <button type="submit" formaction="/stop" class="stop"><i class="fas fa-stop"></i> Arrêter</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
